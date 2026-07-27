@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() { return request.auth != null; }
+
+    function getUser() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() { return isAuth() && getUser().role == 'admin'; }
+    function isAuditor() { return isAuth() && getUser().role in ['admin', 'auditor']; }
+    function isSPOC() { return isAuth() && getUser().role in ['admin', 'spoc']; }
+
+    // Rate limit: max 1 write per second per user
+    function notRapid() {
+      let last = getUser().lastWrite;
+      return last == null || request.time - last.value > duration.value(1, 's');
+    }
+
+    // ── Config ──
+    match /config/{doc} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // ── Users ──
+    match /users/{userId} {
+      allow read: if isAuth();
+      allow create: if isAdmin() || !exists(/databases/$(database)/documents/users/$(userId));
+      allow update: if isAdmin() || request.auth.uid == userId;
+      allow delete: if isAdmin();
+    }
+
+    // ── Audits ──
+    match /audits/{auditId} {
+      allow read: if isAuth();
+      allow create: if isAuditor() && notRapid();
+      allow update: if isAuditor() && notRapid();
+      allow delete: if isAdmin();
+    }
+
+    // ── Plans ──
+    match /plans/{planId} {
+      allow read: if isAuth();
+      allow create: if isAdmin() && notRapid();
+      allow update: if isAdmin() && notRapid();
+      allow delete: if isAdmin();
+    }
+
+    // ── Tasks (SPOC corrective actions) ──
+    match /tasks/{taskId} {
+      allow read: if isAuth();
+      allow create: if isAdmin() && notRapid();
+      allow update: if isSPOC() && notRapid();
+      allow delete: if isAdmin();
+    }
+  }
+}

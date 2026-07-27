@@ -1,0 +1,17 @@
+{
+  "name": "cgsop",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "esbuild src/index.ts --bundle --outfile=public/dist/app.js --serve=3000 --servedir=public",
+    "build": "esbuild src/index.ts --bundle --minify --outfile=public/dist/app.js",
+    "deploy": "npm run build && firebase deploy"
+  },
+  "dependencies": {
+    "firebase": "^11.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0"
+  }
+}

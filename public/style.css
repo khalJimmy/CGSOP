@@ -1,0 +1,167 @@
+/* ═══════════════════════════════════════════════════════
+   CASAGRAND PROCESS AUDIT WORKFLOW v6 — Design System
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* Brand */
+  --brand: #C8401A;
+  --brand2: #A33214;
+  --brand3: #F97316;
+  /* Neutrals */
+  --bg: #F1F5F9;
+  --surface: #FFFFFF;
+  --surface2: #F8FAFC;
+  --ink: #0F172A;
+  --ink2: #1E293B;
+  --muted: #64748B;
+  --subtle: #94A3B8;
+  --border: #E2E8F0;
+  --border2: #CBD5E1;
+  /* Accents */
+  --blue: #3B82F6;
+  --blue2: #2563EB;
+  --blue-bg: #EFF6FF;
+  --green: #059669;
+  --green2: #047857;
+  --green-bg: #ECFDF5;
+  --amber: #D97706;
+  --amber-bg: #FFFBEB;
+  --red: #DC2626;
+  --red-bg: #FEF2F2;
+  --purple: #7C3AED;
+  --purple-bg: #F5F3FF;
+  /* Shadows */
+  --sh1: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --sh2: 0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px -1px rgba(0,0,0,.04);
+  --sh3: 0 10px 15px -3px rgba(0,0,0,.08), 0 4px 6px -2px rgba(0,0,0,.04);
+  --sh4: 0 20px 25px -5px rgba(0,0,0,.10), 0 10px 10px -5px rgba(0,0,0,.04);
+  /* Header */
+  --hdr-bg: #0F172A;
+  --radius: 8px;
+  --radius2: 12px;
+  --radius3: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 13.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Login ─── */
+#login-screen { display: block; }
+
+/* ─── Inputs ─── */
+.inp {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--ink);
+  transition: border-color .15s, box-shadow .15s;
+  outline: none;
+}
+.inp:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(200,64,26,.12);
+}
+.inp::placeholder { color: var(--subtle); }
+textarea.inp { resize: vertical; }
+select.inp { cursor: pointer; }
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--brand);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.btn:hover { opacity: .9; }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn-outline {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--brand); color: var(--brand); }
+
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.btn-sm:hover { opacity: .8; }
+
+/* ─── Stat Cards ─── */
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius2);
+  padding: 20px;
+  box-shadow: var(--sh1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Headings ─── */
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); }
+h3 { font-size: 16px; font-weight: 600; color: var(--ink2); }
+
+/* ─── Table ─── */
+table { font-size: 13px; }
+th { font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+
+/* ─── Toast Animation ─── */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--subtle); }
+
+/* ─── Nav ─── */
+.nav-item { user-select: none; }
+.nav-item:hover { background: var(--surface2); }
+
+/* ─── Details / Summary ─── */
+details summary { cursor: pointer; }
+details summary::-webkit-details-marker { color: var(--muted); }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  #app-shell > div { flex-direction: column; }
+  nav#navbar > div { width: 100% !important; display: flex; overflow-x: auto; gap: 4px; }
+  nav#navbar .nav-item { white-space: nowrap; }
+}
