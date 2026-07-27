@@ -98,8 +98,13 @@ export function onAuthChange(cb: (user: UserData | null) => void) {
 
 // ── First-run check: does any user exist? ──
 export async function isFirstRun(): Promise<boolean> {
-  const snap = await getDocs(query(collection(db, 'users'), limit(1)));
-  return snap.empty;
+  try {
+    const snap = await getDoc(doc(db, 'config', 'setup'));
+    return !snap.exists();
+  } catch {
+    // If we can't read even the public doc, show login
+    return false;
+  }
 }
 
 // ── Create first admin account ──
@@ -116,6 +121,8 @@ export async function createFirstAdmin(email: string, password: string, name: st
       createdAt: Date.now()
     };
     await setDoc(doc(db, 'users', cred.user.uid), userData);
+    // Mark setup as complete
+    await setDoc(doc(db, 'config', 'setup'), { complete: true, createdAt: Date.now() });
     S.user = userData;
     return null;
   } catch (err: any) {

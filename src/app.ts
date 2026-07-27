@@ -1042,12 +1042,21 @@ async function renderSettings() {
 export async function init() {
   initShell();
 
-  // Check first run
-  const firstRun = await isFirstRun();
+  // Show loading immediately so page isn't blank
+  const loginScreen = document.getElementById('login-screen')!;
+  loginScreen.innerHTML = `
+    <div style="position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#C8401A15 100%);">
+      <div style="text-align:center;color:#fff;">
+        <div style="font-size:32px;margin-bottom:12px;">🔍</div>
+        <div style="font-size:14px;opacity:.7;">Loading...</div>
+      </div>
+    </div>
+  `;
 
+  // Check first run (async, won't block loading screen render)
+  const firstRun = await isFirstRun();
   if (firstRun) {
     renderFirstRun();
-    // onAuthChange will handle redirect after setup
   } else {
     renderLogin();
   }

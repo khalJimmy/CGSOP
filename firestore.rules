@@ -21,6 +21,7 @@ service cloud.firestore {
     // ── Config ──
     match /config/{doc} {
       allow read: if isAuth();
+      allow read: if doc == 'setup';  // setup flag publicly readable
       allow write: if isAdmin();
     }
 
